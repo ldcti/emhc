@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Error Page</title>
+	</head>
+	<body>
+		<h2>Application Error, please contact support.</h2>
+		
+		<h3>Debug Information:</h3>
+		
+		Requested URL= <span th:text="${url}"></span><br><br>
+		
+		Exception= <span th:text="${exception.message}"></span><br><br>
+		
+		<strong>Exception Stack Trace</strong><br>
+		<div th:each="ste: ${exception.stackTrace}">
+			<span th:text="${ste}"></span>
+		</div>
+	
+	</body>
+</html>

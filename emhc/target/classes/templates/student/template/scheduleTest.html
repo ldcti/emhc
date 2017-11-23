@@ -1,0 +1,50 @@
+<html layout:decorator="student/template/layout">
+<head>
+	<title>Update Profile Form</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script>
+		function loadSessions(elmt) {
+			form = document.getElementById("sessionForm");
+			form.action=form.action+"/"+elmt.value;
+			alert(form.action);
+			form.submit();
+		}
+	</script>
+</head>
+<body>
+	
+	<div layout:fragment="content">
+	<form th:object="${studentScheduleTest}" th:action="@{/student/schedule}" method="post" role="form">
+		<h3>Primary Assessment</h3>
+		<h4>________________________________________________________________________</h4>
+		<h4>Please pick up the time slot you want</h4>
+		<br><br>
+		<h7>Student from University of Toronto will have the mask test at Toronto </h7>
+		<div class="form-group">
+			<div class="col-sm-9">
+				<label class="active">
+				<h5>Available session(choose your session):</h5></label>
+  			    <select class="select" th:field="${studentScheduleTest.session.sessionid}" id="sessionid" name="sessionid" onchange="loadSessions(this)">
+		        <option value="0">Select First</option>
+		        <option th:each="ses : ${studentScheduleTest.sessions}"
+		                th:value="${ses.sessionid}"
+		                th:text="${ses.name}"></option>
+			    </select>
+			</div>
+		<br><br><br>
+		</div>
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Submit</button>
+
+	</form>	
+
+	<form id="sessionForm" th:action="@{/student/schedule}" method="get"></form>
+
+	<br><br>
+
+	</div> 
+
+</body>
+</html>

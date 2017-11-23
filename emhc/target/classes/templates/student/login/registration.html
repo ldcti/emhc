@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Registration Form</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<form th:action="@{/student/login}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">If your profile is already created, Go To Login Page!</button>
+	</form>	
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<form autocomplete="off" th:action="@{/student/registration}"
+					th:object="${userDTO}" method="post" class="form-horizontal"
+					role="form">
+					<h3>Create Your Profile</h3>
+					<h5>Please fill in all fields below to create your profile. All fields with * are mandatory.</h5>
+
+					<div id="errors" class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+						<ul>
+							<li th:each="err : ${#fields.errors('*')}">
+								<font th:text="${err}" style="font-size: 12px;"></font>
+							</li>
+						</ul>
+					</div>	
+					<div class="form-group">				
+						<div class="col-sm-9" >
+ 						    <select class="form-control" th:field="${userDTO.program.programid}" id="programid" name="programid">
+						        <option value="0">Program</option>
+						        <option th:each="pro : ${userDTO.programs}"
+						                th:value="${pro.programid}"
+						                th:text="${pro.name}"></option>
+						    </select>
+  						</div>
+					</div>							
+<!--  					<div class="form-group">				
+						<div class="col-sm-9" >
+ 						    <select class="form-control" th:field="${userDTO.organization.organizationid}" id="organizationid" name="organizationid">
+						        <option value="0">organization</option>
+						        <option th:each="org : ${userDTO.organizations}"
+						                th:value="${org.organizationid}"
+						                th:text="${org.name}"></option>
+						    </select>
+  						</div>
+					</div>							
+ -->
+  					<div class="form-group">
+						<div class="col-sm-9">
+						<input type="text" th:field="*{username}" placeholder="User Name*" 
+								class="form-control" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+						<input type="text" th:field="*{firstname}" placeholder="First Name*"
+								class="form-control" /> 
+						</div>
+					</div>
+	
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="text" th:field="*{lastname}" placeholder="Last Name*" 
+								class="form-control" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="password" th:field="*{password}" placeholder="Password*" 
+								class="form-control" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="password" th:field="*{confirmpassword}" placeholder="ConfirmPassword*" 
+								class="form-control" /> 
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="text" th:field="*{email}" placeholder="Email*"
+								class="form-control" /> 
+						</div>
+					</div>
+				
+					<h5>Note: if you have organization email, your email domain should be @queensu.ca, otherwise please provide your personal email.</h5>
+					
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="text" th:field="*{role}" placeholder="client"
+								class="form-control" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="text" th:field="*{programyear}" placeholder="Program Year"
+								class="form-control" /> 
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-9">
+							<button type="submit" class="btn btn-primary btn-block">Register User</button>
+						</div>
+					</div>
+					
+					<span th:utext="${successMessage}"></span>
+					
+					
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

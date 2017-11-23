@@ -1,0 +1,152 @@
+<html layout:decorator="student/template/layout">
+	<div layout:fragment="content">
+
+			<div class="mt_mainContent" style="width:750px;">
+				<div class="center parsys">
+					<div class="parsys uiwSlideshow uiGallery section">
+		    
+						<div id="toolbarObj21180555" class="allToolbarSelector"></div>
+		    
+						<script type="text/javascript">
+						     jQuery(document).ready(function() {
+						        // setTimeout(function(){
+						         jQuery('#component21180555nivoSlider').nivoSlider({
+						            effect:'fade',
+						            animSpeed:500,
+						            pauseTime: 2000,
+						            slices: 15,
+						            boxCols: 8,
+						            boxRows: 4,
+						            directionNav:true,
+						            controlNav:false,
+						
+						            directionNavHide:false,
+						            pauseOnHover:true
+						            
+						            });
+						         //},200);
+						    });
+						</script>
+						<style> 
+							#component21180555 .nivo-main-image{
+							
+							}
+						</style>
+					</div>
+					<div class="columns section uiwColumns">   
+		    
+						<div id="toolbarObj1646786130" class="allToolbarSelector"></div>
+		    
+						<div id="component1646786130"  class="columnsComponent">  
+							<div class="wholeGrid">
+								<div class="colCount colCount_0_0" style="float:left;width:672px;" >
+									<div style="padding-top:-1px;margin-top:1px;"> 
+										<div class="parsys conContainer_0_0">
+											<div class="uiwText text parbase section">   
+												<div id="toolbarObj765244374" class="allToolbarSelector"></div>
+												<div>
+													<style th:inline="text">
+														p.local, td.local, th.local, h1.local, h2.local, h3.local, h4.local, h5.local, li.local {
+															font-family: Arial,sans-serif;
+															font-size: 14px;
+														}
+														
+														h3 {
+															MARGIN-TOP: 0px; margin-bottom: .5em; DISPLAY: block! important; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #3D3C3C; FONT-FAMILY: Arial,sans-serif;
+														}
+														
+														input.usr {
+															background-image: url([[@{/static/image/User.png}]]);
+														    background-position: 10px 10px; 
+														    background-repeat: no-repeat;
+															width: 100%;
+															box-sizing: border-box;
+															padding: 8px 20px 8px 40px;
+															margin: 6px 0;
+															border: 2px solid #c7c7c7;
+															background-color: white;
+														}
+														input.pswd {
+															background-image: url([[@{/static/image/Lock.png}]]);
+														    background-position: 10px 10px; 
+														    background-repeat: no-repeat;
+														    padding: 8px 20px 8px 40px;
+															width: 100%;
+															box-sizing: border-box;
+															margin: 6px 0;
+															border: 2px solid #c7c7c7;
+															background-color: white;
+														}
+
+													</style>
+													<h4 th:text="#{student.login.title}"></h4>
+													<div style="margin-left: 100px; margin-top: 10px; border: solid 1px #b6b6b6; width: 400px; min-height: 360px; background-color: #f5f8fa; overflow: hidden">
+														<div style="width: 50px; height: 310px; float:left; background-color: #f5f8fa; "></div>
+														<div style="width: 300px; float: left; padding-top: 20px; background-color: #f5f8fa;">
+									
+															<form name="login" id="login" th:action="@{/student/login}" method="post" style="margin:0; background-color: #f5f8fa;" >
+																<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+																	<font th:text="${message.message}" style="font-size: 12px;"></font>
+																</div>
+																<div th:if="${param.error}" class="alert alert-danger">
+																	<font style="font-size: 12px;">Invalid username and password.</font>
+																</div>
+																	<div th:text="#{student.login.studentNumber}+':'"></div>
+																	<div><input type="text" name="email" id="email" class="usr" /></div>
+																	<div th:text="#{student.login.password}+':'"></div>
+																	<div><input type="password" name="password" id="password" class="pswd" /></div>
+ 																	<div style="padding-top: 5px; padding-bottom: 15px;">
+																		<label th:text="#{student.login.rememberme}+':'"></label> 
+																		<input type="checkbox" name="remember-me" id="remember-me" />
+																	</div>
+ 																	<div><input type="submit" name="login" th:value="#{student.login.login}" class="rbutton" /></div>
+																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+															</form>
+															<br />
+															<hr />
+															<p style="font-size: 12px;"><strong th:text="#{student.login.note}"></strong><br /><font th:utext="#{student.login.notedetail}"></font></p>
+															<br /><br />
+															<script language="JavaScript" type="text/javascript">
+																window.document.login.stdnum.focus();
+															</script>
+									
+														</div>
+														<div style="width: 50px; height: 290px; float:left; background-color: #f5f8fa; "></div>
+													</div>
+							
+													<br /><br /><br />
+												</div>
+											</div>
+			
+											<div class="uiwNewsList section">   
+												<div id="toolbarObj182631935" class="allToolbarSelector"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+			       			</div>
+							<div style="clear:both;"></div>
+			        		<div style="clear:both;"></div>
+			     			<div style="clear:both;"></div>
+						</div>
+					</div>
+			
+				</div>
+		
+			</div>
+	
+			<div class="mt_rightFeature" style="width:0px;">
+				<style>
+				#componentRIGHT .rightContainer{
+				margin-right:10px;
+				}
+				</style>
+			
+				<div id="componentRIGHT">
+					<div class="rightContainer">
+					</div>
+				</div>
+			</div>		
+
+	</div>
+</html>

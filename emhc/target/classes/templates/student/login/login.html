@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Sign-Up/Login Form</title>
+		<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
+  
+		<link rel="stylesheet" th:href="@{/css/student-login.css}" />
+		<link rel="stylesheet" th:href="@{/css/bootstrap-responsive.css}" />
+		<link rel="stylesheet" th:href="@{/color/default.css}" />
+		<script>
+			function loadOrgs(elmt) {
+				form = document.getElementById("orgForm");
+				form.action=form.action+"/"+elmt.value;
+				alert("login action: "+form.action);
+				form.submit();
+			}
+		</script>
+	</head>
+
+	<body>
+		<!-- navbar -->
+		<div class="navbar-wrapper">
+			<div class="navbar navbar-inverse navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="container">
+						<!-- Responsive navbar -->
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+						</a>
+						<a href="index.html"><img th:src="@{/images/emh_logo.gif}" alt="emh INC." style="width:178px;height:78%;"/></a>
+						<!-- navigation -->
+						<nav class="pull-right nav-collapse collapse">
+							<ul id="menu-main" class="nav">
+								<li><a title="team" href="#about">About</a></li>
+								<li><a title="services" href="#services">Services</a></li>
+								<li><a title="works" href="#works">Works</a></li>
+								<li><a title="blog" href="#blog">Blog</a></li>
+								<li><a title="contact" href="#contact">Contact</a></li>
+								<li><a href="/student/login">Login</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form">
+      
+			<ul class="tab-group">
+				<li class="tab active"><a href="#signup">Sign Up</a></li>
+				<li class="tab"><a href="#login">Log In</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div id="signup">   
+					<!-- <h1>Sign Up for Free</h1> -->
+					
+					<form th:object="${userDTO}" th:action="@{/student/registration}" method="post" role="form">
+    
+						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+							<font th:text="${message.message}" style="font-size: 12px;"></font>
+						</div>
+						<div th:if="${param.error}" class="alert alert-danger">
+							<font style="font-size: 12px;">Invalid username and password.</font>
+						</div>
+						<div class="top-row">				
+	 						<div class="field-wrap">
+								<label class="active">
+									Organization<span class="req">*</span>
+								</label>
+	 						    <select class="select" th:field="${userDTO.organization.organizationid}" id="organizationid" name="organizationid" onchange="loadOrgs(this)">
+							        <option value="0">Select First</option>
+							        <option th:each="org : ${userDTO.organizations}"
+							                th:value="${org.organizationid}"
+							                th:text="${org.name}"></option>
+							    </select>
+	  						</div>
+							<div class="field-wrap" th:if="${userDTO.programs!=null}">
+								<label class="active">
+									Program<span class="active">*</span>
+								</label>
+	 						    <select class="select" th:field="${userDTO.program.programid}" id="programid" name="programid">
+							        <option value="0">Select</option>
+							        <option th:each="pro : ${userDTO.programs}"
+							                th:value="${pro.programid}"
+							                th:text="${pro.name}"></option>
+							    </select>
+	  						</div>
+						</div>							
+						<!-- <div class="top-row"> -->
+						<div class="field-wrap" th:if="${userDTO.programs!=null}">
+							<label>
+								User Name<span class="req">*</span>
+							</label>
+							<input type="text" class="input" th:field="*{username}" required autocomplete="off" />
+							<input type="hidden" class="input" th:field="*{role}" />
+						</div>
+						  
+							<!-- <div class="field-wrap">
+								<label>
+									Role<span class="req">*</span>
+								</label>
+							</div> -->
+						<!-- </div> -->
+	
+						<div class="top-row" th:if="${userDTO.programs!=null}">
+							<div class="field-wrap">
+								<label>
+									First Name<span class="req">*</span>
+								</label>
+								<input type="text" class="input" th:field="*{firstname}" required autocomplete="off" />
+							</div>
+						  
+							<div class="field-wrap">
+								<label>
+									Last Name<span class="req">*</span>
+								</label>
+								<input type="text" class="input" th:field="*{lastname}" required autocomplete="off"/>
+							</div>
+						
+						</div>
+						
+	    
+						<div class="top-row" th:if="${userDTO.programs!=null}">
+							<div class="field-wrap">
+								<label>
+									Password<span class="req">*</span>
+								</label>
+								<input type="password" class="input" th:field="*{password}" required autocomplete="off"/>
+							</div>
+							<div class="field-wrap">
+								<label>
+									Confirm Password<span class="req">*</span>
+								</label>
+								<input type="password" class="input" th:field="*{confirmpassword}" required autocomplete="off"/>
+							</div>
+						</div>
+						
+						<div class="top-row" th:if="${userDTO.programs!=null}">
+							<div class="field-wrap">
+								<label>
+									Email Address<span class="req">*</span>
+								</label>
+								<input type="email" class="input" th:field="*{email}" required autocomplete="off"/>
+							</div>
+							<div class="field-wrap">
+								<label>
+									Program Year<span class="req">*</span>
+								</label>
+								<input type="text" th:field="*{programyear}" class="input" /> 
+							</div>
+						</div>
+						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" />Register User</button>
+					
+					</form>
+					<form id="orgForm" th:action="@{/student/registration}" method="get">
+					</form>
+	
+				</div>
+	  
+				<div id="login">   
+					<!-- <h1>Welcome Back!</h1> -->
+				    
+					<form name="loginForm" id="loginFor" th:action="@{/student/login}" method="post">
+				    
+						<div class="field-wrap">
+							<label>
+								<span th:text="#{student.login.username}"></span><span class="req">*</span>
+							</label>
+							<input type="text" class="input" name="username" id="username" required autocomplete="off"/>
+						</div>
+	    
+						<div class="field-wrap">
+							<label>
+								<span th:text="#{student.login.password}"></span><span class="req">*</span>
+							</label>
+							<input type="password" class="input" name="password" id="password" required autocomplete="off"/>
+						</div>
+						
+						<p class="forgot"><a href="#" th:text="#{student.login.forgot}">Forgot Password?</a></p>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<button class="button button-block"/><span th:text="#{student.login.login}"></span></button>
+					
+					</form>
+				
+				</div>
+			
+			</div><!-- tab-content -->
+	      
+		</div> <!-- /form -->
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="span6 offset3">
+						<ul class="social-networks">
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-instagram icon-2x"></i></a></li>
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-twitter icon-2x"></i></a></li>
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-dribbble icon-2x"></i></a></li>
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-pinterest icon-2x"></i></a></li>
+						</ul>
+						<p class="copyright">
+							&copy; EMH Consulting. All rights reserved.
+			                <div class="credits">
+			                    <!--
+			                        All the links in the footer should remain intact.
+			                        You can delete the links only if you purchased the pro version.
+			                        Licensing information: https://bootstrapmade.com/license/
+			                        Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Maxim
+			                    -->
+			                    <a href="https://bootstrapmade.com/">Designed By KJ</a> by K&J Consulting.
+			                </div>
+						</p>
+					</div>
+				</div>
+			</div>
+			<!-- ./container -->
+		</footer>
+
+		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+		
+		<script th:src="@{/js/student-login.js}"></script>
+		<script th:src="@{/js/jquery.js}"></script>
+		<script th:src="@{/js/jquery.scrollTo.js}"></script>
+		<script th:src="@{/js/jquery.nav.js}"></script>
+		<script th:src="@{/js/jquery.localscroll-1.2.7-min.js}"></script>
+		<script th:src="@{/js/bootstrap.js}"></script>
+		<script th:src="@{/js/jquery.prettyPhoto.js}"></script>
+		<script th:src="@{/js/isotope.js}"></script>
+		<script th:src="@{/js/jquery.flexslider.js}"></script>
+		<script th:src="@{/js/inview.js}"></script>
+		<script th:src="@{/js/animate.js}"></script>
+		<script th:src="@{/js/custom.js}"></script>
+		<script th:src="@{/js/contactform.js}"></script>
+		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		    ga('create', 'UA-55234356-4', 'auto');
+		    ga('send', 'pageview');
+		</script>
+
+	</body>
+</html>

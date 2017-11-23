@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorator="student/template/layout">
+	<div layout:fragment="content">
+
+		Student Home Page<br><br>
+		<form th:action="@{/student/profile}" method="get">
+			<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Profile updatet!</button>
+		</form>	
+		<br><br>
+		<form th:action="@{/student/reset}" method="get">
+			<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Student Reset Password!</button>
+		</form>	
+		<br><br>
+		<form th:action="@{/student/assessment}" method="get">
+			<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Student Assessment!</button>
+		</form>	
+		<br><br>
+		<form th:action="@{/student/schedule}" method="get">
+			<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Schedule My Test!</button>
+		</form>	
+	
+		<br><br>
+		<form id="logout" th:action="@{/student/logout}" method="post" >
+		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		  <button class="btn btn-md btn-warning btn-block" type="Submit">Log Out</button>
+		</form>
+	</div>
+</html>
