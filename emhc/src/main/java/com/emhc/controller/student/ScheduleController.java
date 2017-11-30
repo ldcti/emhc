@@ -13,6 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -20,14 +21,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.dto.StudentScheduleTest;
 import com.emhc.error.Message;
 import com.emhc.model.EmhcUser;
-import com.emhc.model.Program;
+import com.emhc.model.Schedule;
 import com.emhc.model.Session;
 import com.emhc.security.LoginStudent;
-import com.emhc.service.ProgramService;
+import com.emhc.service.ScheduleService;
 import com.emhc.service.SessionService;
 import com.emhc.service.UserService;
 
@@ -46,19 +48,16 @@ public class ScheduleController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private ProgramService programService;
+	private ScheduleService scheduleService;
 	@Autowired
 	private SessionService sessionService;
     @Autowired
     private MessageSource messageSource;
  
- 	//@RequestMapping(value={"/schedule/{sessionid}"}, method = RequestMethod.GET)
     @RequestMapping(value={"/schedule"}, method = RequestMethod.GET)
-	//public String schedule(Model model, @PathVariable("sessionid") Integer sessionid, HttpSession httpSession ){
-    public String schedule(Model model){
-		System.out.println("-------run to schedule here-------");
-		//String rtn = "/student/scheduleTest";
-		String rtn = "/student/scheduleTest";
+ 	public ModelAndView schedule(ModelMap model, HttpSession httpSession){
+ 		String rtn = "/student/scheduleTest";
+		ModelAndView modelAndView = new ModelAndView();
 
 		try{
 			StudentScheduleTest form = new StudentScheduleTest();
@@ -67,23 +66,49 @@ public class ScheduleController {
 			
 			Session session = sessionService.findById(1);
 			List<Session> sessions = sessionService.findByProgram(user.getProgram());
-			
-			for(Session sess: sessions)
-			{
-				
-				System.out.println("------Session Name is "+ sess.getName());
-				
-			}
 			form.setSession(session);
 			form.setSessions(sessions);
-			model.addAttribute("studentScheduleTest", form);
-	
+			modelAndView.addObject("studentScheduleTest",form);
+			modelAndView.setViewName(rtn);
+			return modelAndView;
 
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
-		return rtn;
+		return modelAndView;
+	}
+
+ 	@RequestMapping(value={"/schedule/{sesid}"}, method = RequestMethod.GET)
+    public ModelAndView schedule(ModelMap model, @PathVariable("sesid") int sesid, HttpSession httpSession){
+ 		String rtn = "/student/scheduleTest";
+		ModelAndView modelAndView = new ModelAndView();
+
+		try{
+			StudentScheduleTest form = new StudentScheduleTest();
+			EmhcUser user = getPrincipal();
+			LOGGER.info("$$$$ SP status: " + user.getUserid());
+			
+			Session session = sessionService.findById(sesid);
+			List<Session> sessions = sessionService.findByProgram(user.getProgram());
+			
+			if(sesid != 0) {
+				List<Schedule> schedules = scheduleService.getBySession(session);
+				form.setSchedules(schedules);
+			}
+			
+			form.setSession(session);
+			form.setSessions(sessions);
+			modelAndView.addObject("studentScheduleTest",form);
+//			model.addAttribute("studentScheduleTest", form);
+			modelAndView.setViewName(rtn);
+			return modelAndView;
+
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return modelAndView;
 	}
 
 	

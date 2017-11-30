@@ -1,50 +1,74 @@
-<html layout:decorator="student/template/layout">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	layout:decorator="student/template/layout">
 <head>
-	<title>Update Profile Form</title>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script>
+	<script th:inline="javascript">
 		function loadSessions(elmt) {
 			form = document.getElementById("sessionForm");
 			form.action=form.action+"/"+elmt.value;
-			alert(form.action);
+			alert("schedule action: "+ form.action);
 			form.submit();
 		}
 	</script>
 </head>
-<body>
 	
 	<div layout:fragment="content">
-	<form th:object="${studentScheduleTest}" th:action="@{/student/schedule}" method="post" role="form">
-		<h3>Primary Assessment</h3>
-		<h4>________________________________________________________________________</h4>
-		<h4>Please pick up the time slot you want</h4>
-		<br><br>
-		<h7>Student from University of Toronto will have the mask test at Toronto </h7>
-		<div class="form-group">
-			<div class="col-sm-9">
-				<label class="active">
-				<h5>Available session(choose your session):</h5></label>
-  			    <select class="select" th:field="${studentScheduleTest.session.sessionid}" id="sessionid" name="sessionid" onchange="loadSessions(this)">
-		        <option value="0">Select First</option>
-		        <option th:each="ses : ${studentScheduleTest.sessions}"
-		                th:value="${ses.sessionid}"
-		                th:text="${ses.name}"></option>
-			    </select>
+	
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<form autocomplete="off" th:object="${studentScheduleTest}" th:action="@{/student/schedule}" method="post"  class="form-horizontal" role="form">
+				<h3>Primary Assessment</h3>
+				<h4>________________________________________________________________________</h4>
+				<h4>Please pick up the time slot you want</h4>
+				<br><br>
+				<h7>Student from University of Toronto will have the mask test at Toronto </h7>
+	
+					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
+					</div>	
+
+					<div class="form-group">
+						<div class="col-sm-9">
+			   				<label class="active">
+								<h5>Available session(choose your session):</h5>
+							</label>
+			  			    <select class="select" th:field="${studentScheduleTest.session.sessionid}" id="sessionid" name="sessionid" onchange="loadSessions(this)">
+					        <option value="0">Select First</option>
+					        <option th:each="ses : ${studentScheduleTest.sessions}"
+					                th:value="${ses.sessionid}"
+					                th:text="${ses.name}"></option>
+						    </select>
+						</div>
+					</div>
+
+<!-- 		  			<div class="form-group"" th:if="${studentScheduleTest.schedules!=null}">
+		  				<div class="col-sm-9">
+							<label class="active">
+								Schedule<span class="active">*</span>
+							</label>
+							    <select class="select" th:field="${studentScheduleTest.schedule.scheduleid}" id="scheduleid" name="scheduleid">
+							        <option value="0">Select</option>
+							        <option th:each="sch : ${studentScheduleTest.schedules}"
+							                th:value="${sch.scheduleid}"
+							                th:text="${sch.name}"></option>
+							    </select>
+						</div>
+					</div>
+ -->	 
+	 				<div class="form-group">
+						<div class="col-sm-9">
+	 					<button class="btn btn-md btn-warning btn-block" type="Submit">Submit</button>
+						</div>
+					</div>		
+						<span th:utext="${successMessage}"></span>
+
+				</form>	
+				<form id="sessionForm" th:action="@{/student/schedule}" method="get">
+				</form>
+ 		
+				</div>
 			</div>
-		<br><br><br>
 		</div>
-		<button class="btn btn-md btn-warning btn-block" type="Submit">Submit</button>
 
-	</form>	
 
-	<form id="sessionForm" th:action="@{/student/schedule}" method="get"></form>
-
-	<br><br>
-
-	</div> 
-
-</body>
 </html>
