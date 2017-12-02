@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html layout:decorator="student/template/layout">
-
+<head>
+	<script>	
+		function toggleTB(what,elid,state)
+	{
+	    if(what.checked)
+	    {
+	        document.getElementById(elid).disabled=state
+	    }
+	    else
+	    {
+	        document.getElementById(elid).disabled=state
+	    }
+	}
+		
+	</script>
+</head>
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
@@ -25,50 +40,58 @@
 						<input type="radio" name="button01" value="No" onclick="toggleTB(this,'text01',1)">No&nbsp;&nbsp;
 						<input type="text" th:field=*{answer1}  name="mfi_nam9" class="text required" id="text01" disabled=1 /><br>
 						 <!-- "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
-						 
-						 
 						<label>2. Claustrophobia </label> <br>
 						<input type="radio" name="button02" value="Yes" onclick="toggleTB(this,'text02',0)">Yes
 						<input type="radio" name="button02" value="No" onclick="toggleTB(this,'text02',1)">No&nbsp;&nbsp;
 						<input type="text" th:field=*{answer2}  name="mfi_nam9" class="text required" id="text02" disabled=1 /><br>
-						
-						
-						 <label>3. Panic attacks </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text03')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer3} name="mfi_nam9" class="text required" id="text03" disabled=1 /><br>
+						<label>3. Panic attacks </label> <br>
+						<input type="radio" name="button03" value="Yes" onclick="toggleTB(this,'text03',0)">Yes
+						<input type="radio" name="button03" value="No" onclick="toggleTB(this,'text03',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer3}  name="mfi_nam9" class="text required" id="text03" disabled=1 /><br>
 						 <label>4. Allergy to latex, artificial sweetener, citrus or any other allergy that you feel may be of concern?</label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text04')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer4} name="mfi_nam9" class="text required" id="text04" disabled=1 /><br>
+						<input type="radio" name="button04" value="Yes" onclick="toggleTB(this,'text04',0)">Yes
+						<input type="radio" name="button04" value="No" onclick="toggleTB(this,'text04',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer4}  name="mfi_nam9" class="text required" id="text04" disabled=1 /><br>
 						 <label>5. Epilepsy </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text05')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer5} name="mfi_nam9" class="text required" id="text05" disabled=1 /><br>
+ 						<input type="radio" name="button05" value="Yes" onclick="toggleTB(this,'text05',0)">Yes
+						<input type="radio" name="button05" value="No" onclick="toggleTB(this,'text05',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer5}  name="mfi_nam9" class="text required" id="text05" disabled=1 /><br>
 						 <label>6. Heat Exhaustion/Heat Stroke </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text06')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer6} name="mfi_nam9" class="text required" id="text06" disabled=1 /><br>
+						<input type="radio" name="button06" value="Yes" onclick="toggleTB(this,'text06',0)">Yes
+						<input type="radio" name="button06" value="No" onclick="toggleTB(this,'text06',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer6}  name="mfi_nam9" class="text required" id="text06" disabled=1 /><br>
 						 <label>7. High blood pressure </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text07')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer7} name="mfi_nam9" class="text required" id="text07" disabled=1 /><br>
+						<input type="radio" name="button07" value="Yes" onclick="toggleTB(this,'text07',0)">Yes
+						<input type="radio" name="button07" value="No" onclick="toggleTB(this,'text07',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer7}  name="mfi_nam9" class="text required" id="text07" disabled=1 /><br>
 						 <label>8. History of fainting </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text08')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer8} name="mfi_nam9" class="text required" id="text08" disabled=1 /><br>
+						<input type="radio" name="button08" value="Yes" onclick="toggleTB(this,'text08',0)">Yes
+						<input type="radio" name="button08" value="No" onclick="toggleTB(this,'text08',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer8}  name="mfi_nam9" class="text required" id="text08" disabled=1 /><br>
 						 <label>9. History of seizures </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text09')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer9} name="mfi_nam9" class="text required" id="text09" disabled=1 /><br>
+						<input type="radio" name="button09" value="Yes" onclick="toggleTB(this,'text09',0)">Yes
+						<input type="radio" name="button09" value="No" onclick="toggleTB(this,'text09',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer9}  name="mfi_nam9" class="text required" id="text09" disabled=1 /><br>
 						 <label>10. Lung disease/ Persistent Cough</label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text10')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer10} name="mfi_nam9" class="text required" id="text10" disabled=1 /><br>
+						<input type="radio" name="button10" value="Yes" onclick="toggleTB(this,'text10',0)">Yes
+						<input type="radio" name="button10" value="No" onclick="toggleTB(this,'text10',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer10}  name="mfi_nam9" class="text required" id="text10" disabled=1 /><br>
 						 <label>11. Temperature susceptibility </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text11')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer11} name="mfi_nam9" class="text required" id="text11" disabled=1 /><br>
+						<input type="radio" name="button11" value="Yes" onclick="toggleTB(this,'text11',0)">Yes
+						<input type="radio" name="button11" value="No" onclick="toggleTB(this,'text11',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer11}  name="mfi_nam9" class="text required" id="text11" disabled=1 /><br>
 						 <label>12. Trouble tasting </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text12')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer12} name="mfi_nam9" class="text required" id="text12" disabled=1 /><br>
+						<input type="radio" name="button12" value="Yes" onclick="toggleTB(this,'text12',0)">Yes
+						<input type="radio" name="button12" value="No" onclick="toggleTB(this,'text12',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer12}  name="mfi_nam9" class="text required" id="text12" disabled=1 /><br>
 						 <label>13. Are you pregnant? (If yes, do not register for Fit Testing) </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text13')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer13} name="mfi_nam9" class="text required" id="text13" disabled=1 /><br>
+						<input type="radio" name="button13" value="Yes" onclick="toggleTB(this,'text13',0)">Yes
+						<input type="radio" name="button13" value="No" onclick="toggleTB(this,'text13',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer13}  name="mfi_nam9" class="text required" id="text13" disabled=1 /><br>
 						 <label>14. Other conditions, which might interfere with respirator use? </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text14')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer14} name="mfi_nam9" class="text required" id="text14" disabled=1 /><br>
+						<input type="radio" name="button14" value="Yes" onclick="toggleTB(this,'text14',0)">Yes
+						<input type="radio" name="button14" value="No" onclick="toggleTB(this,'text14',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer14}  name="mfi_nam9" class="text required" id="text14" disabled=1 /><br>
 						 <br>										
 						 <button type="submit" class="btn btn-primary btn-block">Submit</button>
 						</div>
@@ -82,19 +105,5 @@
 			</div>
 		</div>
 	</div>
-	<script>	
-		function toggleTB(what,elid,state)
-	{
-	    if(what.checked)
-	    {
-	        document.getElementById(elid).disabled=state
-	    }
-	    else
-	    {
-	        document.getElementById(elid).disabled=state
-	    }
-	}
-		
-	</script>
 
 </html>

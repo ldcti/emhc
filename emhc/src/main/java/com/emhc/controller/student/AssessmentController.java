@@ -40,7 +40,7 @@ public class AssessmentController {
     private AssessmentValidator assessentValidator;
 	
    @InitBinder("answerDTO")
-   public void AssessmentBinder(WebDataBinder binder) {
+   public void initAssessmentBinder(WebDataBinder binder) {
        binder.addValidators(assessentValidator);
    }
 	

@@ -18,7 +18,7 @@ public class AssessmentValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(AssessmentValidator.class);
+        return clazz.equals(AnswerDTO.class);
     }
 
     @Override
