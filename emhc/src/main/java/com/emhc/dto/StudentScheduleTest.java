@@ -7,12 +7,13 @@ import com.emhc.model.Schedule;
 import com.emhc.model.Session;
 
 public class StudentScheduleTest {
+	private int registrationid;
 	private int userid;
 	private Session session;
+	private int scheduleid;
 	private List<Session> sessions;
 	private List<Schedule> schedules;
 
-	
 	public StudentScheduleTest(){
 		
 	}
@@ -22,11 +23,23 @@ public class StudentScheduleTest {
 		
 	}
 
+	public int getRegistrationid() {
+		return registrationid;
+	}
+	public void setRegistrationid(int registrationid) {
+		this.registrationid = registrationid;
+	}
 	public int getUserid() {
 		return userid;
 	}
 	public void setUserid(int userid) {
 		this.userid = userid;
+	}
+	public int getScheduleid() {
+		return scheduleid;
+	}
+	public void setScheduleid(int scheduleid) {
+		this.scheduleid = scheduleid;
 	}
 	public Session getSession() {
 		return session;

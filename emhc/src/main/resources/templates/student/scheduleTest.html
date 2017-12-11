@@ -6,8 +6,8 @@
 		function loadSessions(elmt) {
 			form = document.getElementById("sessionForm");
 			form.action=form.action+"/"+elmt.value;
-			alert("schedule action: "+ form.action);
-			form.submit();
+/* 			alert("schedule action: "+ form.action);
+ */			form.submit();
 		}
 	</script>
 </head>
@@ -43,13 +43,12 @@
 
  		  			<div class="form-group" th:if="${studentScheduleTest.schedules!=null}">
 		  				<div class="col-sm-9">
-							<label class="active">
-								Schedule<span class="active">*</span>
+			                <label th:each="schedule : ${studentScheduleTest.schedules}" >
+			                    <input type="radio" th:field="*{scheduleid}"                      
+			                        th:text="${schedule.scheduletime}" th:value="${schedule.scheduleid}" th:checked="${schedule.scheduleid==scheduleid?'checked':''}"/>
+			                        
 							</label>
-								<li th:each="item: ${studentScheduleTest.schedules}">
-								        <input type="radio" th:field="*{schedules}" th:value="${item}"/>                                
-								        <label th:for="${#ids.prev('schedules')}" th:text="${item}" ></label>                
-								</li>
+							<br>
 
 						</div>
 					</div>

@@ -1,5 +1,7 @@
 package com.emhc.controller.student;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,23 +14,24 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.dto.StudentScheduleTest;
 import com.emhc.error.Message;
 import com.emhc.model.EmhcUser;
+import com.emhc.model.Registration;
 import com.emhc.model.Schedule;
 import com.emhc.model.Session;
 import com.emhc.security.LoginStudent;
+import com.emhc.service.RegistrationService;
 import com.emhc.service.ScheduleService;
 import com.emhc.service.SessionService;
 import com.emhc.service.UserService;
@@ -47,6 +50,8 @@ public class ScheduleController {
  	 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RegistrationService registrationService;
 	@Autowired
 	private ScheduleService scheduleService;
 	@Autowired
@@ -91,16 +96,23 @@ public class ScheduleController {
 			
 			Session session = sessionService.findById(sesid);
 			List<Session> sessions = sessionService.findByProgram(user.getProgram());
+			List<Schedule> schedules = scheduleService.getBySession(session);
+			form.setSchedules(schedules);
+
+			Registration registration = registrationService.findByEmhcUser(user);
 			
-			if(sesid != 0) {
-				List<Schedule> schedules = scheduleService.getBySession(session);
-				form.setSchedules(schedules);
+			if(registration!=null){
+				form.setScheduleid(registration.getSchedule().getScheduleid());
 			}
+			else{
+				form.setScheduleid(0);
+				
+			}
+			
 			
 			form.setSession(session);
 			form.setSessions(sessions);
 			modelAndView.addObject("studentScheduleTest",form);
-//			model.addAttribute("studentScheduleTest", form);
 			modelAndView.setViewName(rtn);
 			return modelAndView;
 
@@ -108,19 +120,22 @@ public class ScheduleController {
 		catch (Exception e){
 			e.printStackTrace();
 		}
+
 		return modelAndView;
 	}
 
 	
 	@RequestMapping(value="/schedule", method=RequestMethod.POST)
-	public String schedule(@Valid @ModelAttribute("studentScheduleTest") StudentScheduleTest form, BindingResult bindingResult, Model model) {
+//	@RequestMapping(value="/schedule/{scheduleRadio}", method=RequestMethod.POST)
+	public ModelAndView createschedule(@Valid StudentScheduleTest form, BindingResult bindingResult, HttpSession httpSession) {
+//		public ModelAndView createschedule(@Valid StudentScheduleTest form, @RequestParam("scheduleRadio") int scheduleid, BindingResult bindingResult) {
 		
-		String rtn = "/student/scheduleTest";
+		String rtn = "redirect:/schedule/";
 		
-		
+		int scheduleid = 0 ;
 		Message message = new Message();
 		
-		LOGGER.debug("Processing scheduleTest form={}, bindingResult={}", form, bindingResult);
+		ModelAndView modelAndView = new ModelAndView();
 		
 		try {
 			
@@ -128,11 +143,9 @@ public class ScheduleController {
 			//Form validation
 			if (bindingResult.hasErrors()) {
 	            // failed validation
-				model.addAttribute("studentScheduleTest", form);
-
-				
+				LOGGER.debug("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				String msg = messageSource.getMessage("StudentProfile.updateProfile.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
+				String msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
@@ -141,23 +154,41 @@ public class ScheduleController {
 				}
 				message.setStatus(Message.ERROR);
 				message.setMessage(msg);
-				model.addAttribute("message", message);
 				
-	            return rtn;
+	            modelAndView.setViewName(rtn);
+	            return modelAndView;
+	            
 	        }
 			
 			
-			message.setStatus(Message.SUCCESS);
-			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.success", new Object[] {}, LocaleContextHolder.getLocale()));
+			EmhcUser currentUser = getPrincipal();
+			if(registrationService.findByEmhcUser(currentUser)==null) {
+				
+				Registration register = new Registration();
+				register.setUser(currentUser);
+				scheduleid = form.getScheduleid();
+				register.setSchedule(scheduleService.findByScheduleid(scheduleid));
+				LocalDate localDate = LocalDate.now();
+				Date date = java.sql.Date.valueOf(localDate);
+				register.setRegistdate(date);
+				
+				registrationService.saveRegistration(register);
+	
+				//emailService.sendMail(emailDTO);
+				message.setStatus(Message.SUCCESS);
+				message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.success", new Object[] {}, LocaleContextHolder.getLocale()));
+			}else
+			{
+				
+			}
 		} catch(Exception e) {
 			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.error", new Object[] {}, LocaleContextHolder.getLocale()));
+			message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.error", new Object[] {}, LocaleContextHolder.getLocale()));
 		}
+		modelAndView.setViewName(rtn);
 		
-		model.addAttribute("message", message);
-		
-		return rtn;
+		return modelAndView;
 	}
 	
 	
