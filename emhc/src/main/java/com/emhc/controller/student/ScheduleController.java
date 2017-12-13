@@ -100,11 +100,13 @@ public class ScheduleController {
 			form.setSchedules(schedules);
 
 			Registration registration = registrationService.findByEmhcUser(user);
-			
 			if(registration!=null){
+				System.out.println("registration ID = "+ registration.getRegistrationid());
+				form.setRegistrationid(registration.getRegistrationid());
 				form.setScheduleid(registration.getSchedule().getScheduleid());
 			}
 			else{
+				form.setRegistrationid(0);
 				form.setScheduleid(0);
 				
 			}
@@ -130,9 +132,12 @@ public class ScheduleController {
 	public ModelAndView createschedule(@Valid StudentScheduleTest form, BindingResult bindingResult, HttpSession httpSession) {
 //		public ModelAndView createschedule(@Valid StudentScheduleTest form, @RequestParam("scheduleRadio") int scheduleid, BindingResult bindingResult) {
 		
-		String rtn = "redirect:/schedule/";
+		String rtn = "";
 		
-		int scheduleid = 0 ;
+		int scheduleid = form.getScheduleid() ;
+		Schedule schedule = scheduleService.findByScheduleid(scheduleid);
+		int sessionid = schedule.getSession().getSessionid();
+		rtn = "redirect:/student/schedule/" + sessionid;
 		Message message = new Message();
 		
 		ModelAndView modelAndView = new ModelAndView();
@@ -162,9 +167,11 @@ public class ScheduleController {
 			
 			
 			EmhcUser currentUser = getPrincipal();
-			if(registrationService.findByEmhcUser(currentUser)==null) {
+				
+			if((registrationService.findByEmhcUser(currentUser)==null)||(form.getRegistrationid()!=0)) {
 				
 				Registration register = new Registration();
+				register.setRegistrationid(form.getRegistrationid());
 				register.setUser(currentUser);
 				scheduleid = form.getScheduleid();
 				register.setSchedule(scheduleService.findByScheduleid(scheduleid));
@@ -172,7 +179,8 @@ public class ScheduleController {
 				Date date = java.sql.Date.valueOf(localDate);
 				register.setRegistdate(date);
 				
-				registrationService.saveRegistration(register);
+				register = registrationService.saveRegistration(register);
+				form.setRegistrationid(register.getRegistrationid());
 	
 				//emailService.sendMail(emailDTO);
 				message.setStatus(Message.SUCCESS);
@@ -186,6 +194,7 @@ public class ScheduleController {
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.error", new Object[] {}, LocaleContextHolder.getLocale()));
 		}
+		modelAndView.addObject("studentScheduleTest",form);
 		modelAndView.setViewName(rtn);
 		
 		return modelAndView;

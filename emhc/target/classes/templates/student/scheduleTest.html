@@ -48,7 +48,8 @@
 			                        th:text="${schedule.scheduletime}" th:value="${schedule.scheduleid}" th:checked="${schedule.scheduleid==scheduleid?'checked':''}"/>
 			                        
 							</label>
-							<br>
+							<input type="hidden" th:field="*{registrationid}"  
+								class="form-control" /> 							<br>
 
 						</div>
 					</div>
