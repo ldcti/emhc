@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -14,15 +13,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.dto.StudentScheduleTest;
 import com.emhc.error.Message;
@@ -60,9 +57,8 @@ public class ScheduleController {
     private MessageSource messageSource;
  
     @RequestMapping(value={"/schedule"}, method = RequestMethod.GET)
- 	public ModelAndView schedule(ModelMap model, HttpSession httpSession){
+ 	public String schedule(Model model){
  		String rtn = "/student/scheduleTest";
-		ModelAndView modelAndView = new ModelAndView();
 
 		try{
 			StudentScheduleTest form = new StudentScheduleTest();
@@ -73,21 +69,19 @@ public class ScheduleController {
 			List<Session> sessions = sessionService.findByProgram(user.getProgram());
 			form.setSession(session);
 			form.setSessions(sessions);
-			modelAndView.addObject("studentScheduleTest",form);
-			modelAndView.setViewName(rtn);
-			return modelAndView;
+			model.addAttribute("studentScheduleTest",form);
+			return rtn;
 
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
-		return modelAndView;
+		return rtn;
 	}
 
  	@RequestMapping(value={"/schedule/{sesid}"}, method = RequestMethod.GET)
-    public ModelAndView schedule(ModelMap model, @PathVariable("sesid") int sesid, HttpSession httpSession){
+    public String schedule(Model model, @PathVariable("sesid") int sesid){
  		String rtn = "/student/scheduleTest";
-		ModelAndView modelAndView = new ModelAndView();
 
 		try{
 			StudentScheduleTest form = new StudentScheduleTest();
@@ -114,23 +108,20 @@ public class ScheduleController {
 			
 			form.setSession(session);
 			form.setSessions(sessions);
-			modelAndView.addObject("studentScheduleTest",form);
-			modelAndView.setViewName(rtn);
-			return modelAndView;
+			model.addAttribute("studentScheduleTest",form);
+			return rtn;
 
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
 
-		return modelAndView;
+		return rtn;
 	}
 
 	
 	@RequestMapping(value="/schedule", method=RequestMethod.POST)
-//	@RequestMapping(value="/schedule/{scheduleRadio}", method=RequestMethod.POST)
-	public ModelAndView createschedule(@Valid StudentScheduleTest form, BindingResult bindingResult, HttpSession httpSession) {
-//		public ModelAndView createschedule(@Valid StudentScheduleTest form, @RequestParam("scheduleRadio") int scheduleid, BindingResult bindingResult) {
+	public String createschedule(@Valid StudentScheduleTest form, BindingResult bindingResult, Model model) {
 		
 		String rtn = "";
 		
@@ -139,18 +130,15 @@ public class ScheduleController {
 		int sessionid = schedule.getSession().getSessionid();
 		rtn = "redirect:/student/schedule/" + sessionid;
 		Message message = new Message();
-		
-		ModelAndView modelAndView = new ModelAndView();
+		String msg;
 		
 		try {
-			
-
 			//Form validation
 			if (bindingResult.hasErrors()) {
 	            // failed validation
 				LOGGER.debug("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				String msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
+				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
@@ -159,10 +147,8 @@ public class ScheduleController {
 				}
 				message.setStatus(Message.ERROR);
 				message.setMessage(msg);
-				
-	            modelAndView.setViewName(rtn);
-	            return modelAndView;
-	            
+				model.addAttribute("message", message);
+	            return rtn;
 	        }
 			
 			
@@ -183,10 +169,15 @@ public class ScheduleController {
 				form.setRegistrationid(register.getRegistrationid());
 	
 				//emailService.sendMail(emailDTO);
+				msg = messageSource.getMessage("StudentSchedule.scheduleTest.success", new Object[] {}, LocaleContextHolder.getLocale());
 				message.setStatus(Message.SUCCESS);
-				message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.success", new Object[] {}, LocaleContextHolder.getLocale()));
+				message.setMessage(msg);
+				System.out.println("----msg is -------"+ msg);
+				
 			}else
 			{
+				message.setStatus(Message.ERROR);
+				message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.error", new Object[] {}, LocaleContextHolder.getLocale()));
 				
 			}
 		} catch(Exception e) {
@@ -194,10 +185,11 @@ public class ScheduleController {
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.error", new Object[] {}, LocaleContextHolder.getLocale()));
 		}
-		modelAndView.addObject("studentScheduleTest",form);
-		modelAndView.setViewName(rtn);
+		model.addAttribute("message",message);
+		model.addAttribute("studentScheduleTest",form);
 		
-		return modelAndView;
+		
+		return rtn;
 	}
 	
 	

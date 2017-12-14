@@ -1,7 +1,6 @@
-<html layout:decorator="student/template/layout">
-	<!-- <title>Update Profile Form</title>
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<html  xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org" 
+layout:decorator="student/template/layout">
 	
 	<div layout:fragment="content">
 	
@@ -15,21 +14,21 @@
 
 					
 					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
-						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
+						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag"></span></font>
 					</div>	
 
    					<div class="form-group">
 						<div class="col-sm-9">
 						<label>UserName*:</label>
 						<input type="text" name="username" th:field="*{username}" placeholder="User Name*" 
-									class="form-control" />
+									class="form-control"></input>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-9">
 						<label>FirstName*:</label>
 						<input type="text" th:field="*{firstname}" placeholder="First Name*"
-								class="form-control" /> 
+								class="form-control"></input> 
 						</div>
 					</div>
 	
@@ -37,7 +36,7 @@
 						<div class="col-sm-9">
 							<label>LastName*:</label>
 							<input type="text" th:field="*{lastname}" placeholder="Last Name*" 
-								class="form-control" /> 
+								class="form-control"></input> 
 						</div>
 					</div>
 
@@ -45,7 +44,7 @@
 						<div class="col-sm-9">
 							<label>Email*:</label>
 							<input type="text" th:field="*{email}" placeholder="Email*"
-								class="form-control" /> 
+								class="form-control"></input> 
 						</div>
 					</div>
 				
@@ -78,8 +77,6 @@
 							<button type="submit" class="btn btn-primary btn-block">Update</button>
 						</div>
 					</div>
-					<!-- <input type="hidden" name="userid" th:value="${studentProfileUpdate.userid}"> -->
-					<span th:utext="${successMessage}"></span>
 					
 				</form>
 			</div>

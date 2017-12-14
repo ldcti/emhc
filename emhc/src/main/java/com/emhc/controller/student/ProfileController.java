@@ -204,7 +204,7 @@ public class ProfileController {
 		EmhcUser emhcuser = getPrincipal();
 		
 		Message message = new Message();
-		
+		String msg;
 		String oldpassword = form.getOldpassword();
 		String newpassword = form.getPassword();
 		String confirmpassword = form.getConfirmpassword();
@@ -228,7 +228,7 @@ public class ProfileController {
 				model.addAttribute("ResetPassword", form);
 				LOGGER.debug("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				String msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
+				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
@@ -249,9 +249,11 @@ public class ProfileController {
 			emhcuser.setPassword(bCryptPasswordEncoder.encode(newpassword));
 			emhcuser = userService.saveUser(emhcuser);
 
-			
+			msg = messageSource.getMessage("StudentProfile.updatePassword.success", new Object[] {}, LocaleContextHolder.getLocale());
+			System.out.println("------msg is ------"+ msg);
 			message.setStatus(Message.SUCCESS);
-			message.setMessage(messageSource.getMessage("StudentProfile.updatePassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
+			message.setMessage(msg);
+			
 		} catch(Exception e) {
 			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
