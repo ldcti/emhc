@@ -18,14 +18,13 @@ import javax.persistence.TemporalType;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-
 /**
  * The persistent class for the users database table.
  * 
  */
 @Entity
-@Table(name="users")
-@NamedQuery(name="EmhcUser.findAll", query="SELECT u FROM EmhcUser u")
+@Table(name = "users")
+@NamedQuery(name = "EmhcUser.findAll", query = "SELECT u FROM EmhcUser u")
 public class EmhcUser implements Serializable {
 
 	private static final long serialVersionUID = 9116728082295724017L;
@@ -47,15 +46,14 @@ public class EmhcUser implements Serializable {
 	private String lastname;
 
 	@Column(name = "email")
-//	@Email(message = "*Please provide a valid Email")
+	// @Email(message = "*Please provide a valid Email")
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
 	@Column(name = "password")
 	@Length(min = 3, message = "*Your password must have at least 3 characters")
 	@NotEmpty(message = "*Please provide your password")
-	//@Transient
+	// @Transient
 	private String password;
-	
 
 	private int programyear;
 
@@ -67,26 +65,26 @@ public class EmhcUser implements Serializable {
 
 	private byte viewer;
 
-	//bi-directional many-to-one association to Answer
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Answer
+	@OneToMany(mappedBy = "user")
 	private List<Answer> answers;
 
-	//bi-directional many-to-one association to Registration
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Registration
+	@OneToMany(mappedBy = "user")
 	private List<Registration> registrations;
 
-	//bi-directional many-to-one association to Program
+	// bi-directional many-to-one association to Program
 	@ManyToOne
-	@JoinColumn(name="programid")
+	@JoinColumn(name = "programid")
 	private Program program;
 
-	//bi-directional many-to-one association to Role
+	// bi-directional many-to-one association to Role
 	@ManyToOne
-	@JoinColumn(name="roleid")
+	@JoinColumn(name = "roleid")
 	private Role role;
 
-	//bi-directional many-to-one association to Usersession
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Usersession
+	@OneToMany(mappedBy = "user")
 	private List<Usersession> usersessions;
 
 	public EmhcUser() {

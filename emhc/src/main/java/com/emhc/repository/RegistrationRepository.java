@@ -7,5 +7,5 @@ import com.emhc.model.Registration;
 import com.emhc.model.Schedule;
 
 public interface RegistrationRepository extends JpaRepository<Registration, Integer> {
-	 public Registration findByUser(EmhcUser user);
+	public Registration findByUser(EmhcUser user);
 }

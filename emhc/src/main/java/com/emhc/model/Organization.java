@@ -4,19 +4,18 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the organizations database table.
  * 
  */
 @Entity
-@Table(name="organizations")
-@NamedQuery(name="Organization.findAll", query="SELECT o FROM Organization o")
+@Table(name = "organizations")
+@NamedQuery(name = "Organization.findAll", query = "SELECT o FROM Organization o")
 public class Organization implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "organizationid", updatable = false, nullable = false)
 	private long organizationid;
 
@@ -30,12 +29,12 @@ public class Organization implements Serializable {
 
 	private String phone;
 
-	//bi-directional many-to-one association to Location
-	@OneToMany(mappedBy="organization")
+	// bi-directional many-to-one association to Location
+	@OneToMany(mappedBy = "organization")
 	private List<Location> locations;
 
-	//bi-directional many-to-one association to Program
-	@OneToMany(mappedBy="organization")
+	// bi-directional many-to-one association to Program
+	@OneToMany(mappedBy = "organization")
 	private List<Program> programs;
 
 	public Organization() {

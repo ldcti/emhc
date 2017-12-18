@@ -33,7 +33,6 @@ import com.emhc.service.UserService;
 import com.emhc.validator.ResetPassowrdValidator;
 import com.emhc.validator.StudentProfileUpdateValidator;
 
-
 /**
  * 
  * @author dong.liu
@@ -48,37 +47,38 @@ public class ProfileController {
 	private UserService userService;
 	@Autowired
 	private ProgramService programService;
-   @Autowired
-    private MessageSource messageSource;
 	@Autowired
-    private StudentProfileUpdateValidator profileValidator;
+	private MessageSource messageSource;
 	@Autowired
-    private ResetPassowrdValidator resetValidator;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-	 
-   @InitBinder("studentProfileUpdate")
-   public void initProfileUpdateBinder(WebDataBinder binder) {
-       binder.addValidators(profileValidator);
-   }
-   @InitBinder("resetPassword")
-   public void initResetPasswordeBinder(WebDataBinder binder) {
-       binder.addValidators(resetValidator);
-   }
+	private StudentProfileUpdateValidator profileValidator;
+	@Autowired
+	private ResetPassowrdValidator resetValidator;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
- 	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
-	public String profile(Model model){
+	@InitBinder("studentProfileUpdate")
+	public void initProfileUpdateBinder(WebDataBinder binder) {
+		binder.addValidators(profileValidator);
+	}
+
+	@InitBinder("resetPassword")
+	public void initResetPasswordeBinder(WebDataBinder binder) {
+		binder.addValidators(resetValidator);
+	}
+
+	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
+	public String profile(Model model) {
 
 		System.out.println("-------run to profile here-------");
 		String rtn = "/student/updateProfile";
 
-		try{
-	
+		try {
+
 			StudentProfileUpdate form = new StudentProfileUpdate();
 			EmhcUser emhcuser = getPrincipal();
 			LOGGER.info("$$$$ SP status: " + emhcuser.getUserid());
 			form.setUsername(emhcuser.getUsername());
-			System.out.println("------userid is "+ emhcuser.getUserid());
+			System.out.println("------userid is " + emhcuser.getUserid());
 			form.setUserid(emhcuser.getUserid());
 			form.setFirstname(emhcuser.getFirstname());
 			form.setLastname(emhcuser.getLastname());
@@ -89,23 +89,22 @@ public class ProfileController {
 			form.setPrograms(programs);
 			model.addAttribute("studentProfileUpdate", form);
 
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return rtn;
 	}
 
-	
-	@RequestMapping(value="/profile", method=RequestMethod.POST)
-	public String profile(@Valid @ModelAttribute("studentProfileUpdate") StudentProfileUpdate form, BindingResult bindingResult, Model model) {
-		
+	@RequestMapping(value = "/profile", method = RequestMethod.POST)
+	public String profile(@Valid @ModelAttribute("studentProfileUpdate") StudentProfileUpdate form,
+			BindingResult bindingResult, Model model) {
+
 		String rtn = "/student/updateProfile";
-		
+
 		EmhcUser emhcuser = getPrincipal();
-		
+
 		Message message = new Message();
-		
+
 		LOGGER.debug("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
 
 		String username = form.getUsername();
@@ -115,7 +114,6 @@ public class ProfileController {
 		Integer programyear = form.getProgramyear();
 		Program program = form.getProgram();
 
-		
 		StudentProfileUpdate newForm = new StudentProfileUpdate();
 		newForm.setUsername(username);
 		newForm.setFirstname(firstname);
@@ -126,17 +124,18 @@ public class ProfileController {
 		List<Program> programs = programService.findAll();
 		newForm.setPrograms(programs);
 		model.addAttribute("studentProfileUpdate", newForm);
-		
+
 		try {
-			//Form validation
+			// Form validation
 			if (bindingResult.hasErrors()) {
-	            // failed validation
+				// failed validation
 				System.out.println("-------run to here --------");
 				LOGGER.debug("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				String msg = messageSource.getMessage("StudentProfile.updateProfile.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
-				for(ObjectError i: errors) {
-					if(i instanceof FieldError) {
+				String msg = messageSource.getMessage("StudentProfile.updateProfile.validation", new Object[] {},
+						LocaleContextHolder.getLocale()) + "<br />";
+				for (ObjectError i : errors) {
+					if (i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
 						msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
 					}
@@ -144,14 +143,14 @@ public class ProfileController {
 				message.setStatus(Message.ERROR);
 				message.setMessage(msg);
 				model.addAttribute("message", message);
-				
-	            return rtn;
-	        }
-			
-			//Required fields
-			System.out.println("------userid is form------"+ form.getUserid());
-			System.out.println("------password is form------"+ emhcuser.getPassword());
-			
+
+				return rtn;
+			}
+
+			// Required fields
+			System.out.println("------userid is form------" + form.getUserid());
+			System.out.println("------password is form------" + emhcuser.getPassword());
+
 			emhcuser.setUsername(username);
 			emhcuser.setFirstname(form.getFirstname());
 			emhcuser.setLastname(form.getLastname());
@@ -162,75 +161,74 @@ public class ProfileController {
 			emhcuser = userService.saveUser(emhcuser);
 
 			message.setStatus(Message.SUCCESS);
-			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.success", new Object[] {}, LocaleContextHolder.getLocale()));
-		} catch(Exception e) {
+			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.success", new Object[] {},
+					LocaleContextHolder.getLocale()));
+		} catch (Exception e) {
 			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.error", new Object[] {}, LocaleContextHolder.getLocale()));
+			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.error", new Object[] {},
+					LocaleContextHolder.getLocale()));
 		}
-		
+
 		model.addAttribute("message", message);
-		
+
 		return rtn;
 	}
-	
-	
- 	@RequestMapping(value={"/reset"}, method = RequestMethod.GET)
-	public String reset(Model model){
+
+	@RequestMapping(value = { "/reset" }, method = RequestMethod.GET)
+	public String reset(Model model) {
 
 		System.out.println("-------run to reset here-------");
 		String rtn = "/student/resetPassword";
 
-		try{
-	
+		try {
+
 			ResetPassword form = new ResetPassword();
 			EmhcUser emhcuser = getPrincipal();
 			LOGGER.info("$$$$ SP status: " + emhcuser.getUserid());
 			model.addAttribute("resetPassword", form);
 
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return rtn;
 	}
 
-	
-	@RequestMapping(value="/reset", method=RequestMethod.POST)
-	public String reset(@Valid @ModelAttribute("resetPassword") ResetPassword form, BindingResult bindingResult, Model model) {
-		
+	@RequestMapping(value = "/reset", method = RequestMethod.POST)
+	public String reset(@Valid @ModelAttribute("resetPassword") ResetPassword form, BindingResult bindingResult,
+			Model model) {
+
 		String rtn = "/student/resetPassword";
-		
+
 		EmhcUser emhcuser = getPrincipal();
-		
+
 		Message message = new Message();
 		String msg;
 		String oldpassword = form.getOldpassword();
 		String newpassword = form.getPassword();
 		String confirmpassword = form.getConfirmpassword();
-		
+
 		ResetPassword newForm = new ResetPassword();
 		newForm.setOldpassword(oldpassword);
 		newForm.setPassword(newpassword);
 		newForm.setConfirmpassword(confirmpassword);
 
 		model.addAttribute("resetPassword", newForm);
-		
-		
-		LOGGER.debug("Processing resetPassword form={}, bindingResult={}", form, bindingResult);
-		
-		try {
-			
 
-			//Form validation
+		LOGGER.debug("Processing resetPassword form={}, bindingResult={}", form, bindingResult);
+
+		try {
+
+			// Form validation
 			if (bindingResult.hasErrors()) {
-	            // failed validation
+				// failed validation
 				model.addAttribute("ResetPassword", form);
 				LOGGER.debug("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
-				for(ObjectError i: errors) {
-					if(i instanceof FieldError) {
+				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {},
+						LocaleContextHolder.getLocale()) + "<br />";
+				for (ObjectError i : errors) {
+					if (i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
 						msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
 					}
@@ -238,43 +236,45 @@ public class ProfileController {
 				message.setStatus(Message.ERROR);
 				message.setMessage(msg);
 				model.addAttribute("message", message);
-				
-	            return rtn;
-	        }
-			
-			//Required fields
-			System.out.println("------userid is form------"+ form.getUserid());
-			System.out.println("------password is form------"+ emhcuser.getPassword());
-			
+
+				return rtn;
+			}
+
+			// Required fields
+			System.out.println("------userid is form------" + form.getUserid());
+			System.out.println("------password is form------" + emhcuser.getPassword());
+
 			emhcuser.setPassword(bCryptPasswordEncoder.encode(newpassword));
 			emhcuser = userService.saveUser(emhcuser);
 
-			msg = messageSource.getMessage("StudentProfile.updatePassword.success", new Object[] {}, LocaleContextHolder.getLocale());
-			System.out.println("------msg is ------"+ msg);
+			msg = messageSource.getMessage("StudentProfile.updatePassword.success", new Object[] {},
+					LocaleContextHolder.getLocale());
+			System.out.println("------msg is ------" + msg);
 			message.setStatus(Message.SUCCESS);
 			message.setMessage(msg);
-			
-		} catch(Exception e) {
+
+		} catch (Exception e) {
 			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentProfile.updatePassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
+			message.setMessage(messageSource.getMessage("StudentProfile.updatePassword.error", new Object[] {},
+					LocaleContextHolder.getLocale()));
 		}
-		
+
 		model.addAttribute("message", message);
-		
+
 		return rtn;
-	}	
-	
-    private EmhcUser getPrincipal(){
-    	EmhcUser user = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
-        if (principal instanceof LoginStudent) {
-            user = ((LoginStudent)principal).getClient();
-        } else {
-            user = userService.getByUsername("");
-        }
-        return user;
-    }
-	
+	}
+
+	private EmhcUser getPrincipal() {
+		EmhcUser user = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof LoginStudent) {
+			user = ((LoginStudent) principal).getClient();
+		} else {
+			user = userService.getByUsername("");
+		}
+		return user;
+	}
+
 }

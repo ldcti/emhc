@@ -8,6 +8,7 @@ import com.emhc.model.Schedule;
 import com.emhc.model.Session;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-	 Schedule findByScheduleid(int id);
-	 public List<Schedule> findBySession(Session session);
+	Schedule findByScheduleid(int id);
+
+	public List<Schedule> findBySession(Session session);
 }

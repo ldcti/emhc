@@ -3,14 +3,13 @@ package com.emhc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the templates database table.
  * 
  */
 @Entity
-@Table(name="templates")
-@NamedQuery(name="Template.findAll", query="SELECT t FROM Template t")
+@Table(name = "templates")
+@NamedQuery(name = "Template.findAll", query = "SELECT t FROM Template t")
 public class Template implements Serializable {
 	private static final long serialVersionUID = 1L;
 

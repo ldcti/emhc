@@ -6,14 +6,12 @@ import org.springframework.stereotype.Service;
 import com.emhc.model.Role;
 import com.emhc.repository.RoleRepository;
 
-
-
 @Service("roleService")
-public class RoleService{
+public class RoleService {
 
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
 	public Role findRoleByName(String name) {
 		return roleRepository.findByName(name);
 	}

@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the roles database table.
  * 
  */
 @Entity
-@Table(name="roles")
-@NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
+@Table(name = "roles")
+@NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -20,12 +19,12 @@ public class Role implements Serializable {
 
 	private String name;
 
-	//bi-directional many-to-one association to Funcrole
-	@OneToMany(mappedBy="role")
+	// bi-directional many-to-one association to Funcrole
+	@OneToMany(mappedBy = "role")
 	private List<Funcrole> funcroles;
 
-	//bi-directional many-to-one association to User
-	@OneToMany(mappedBy="role")
+	// bi-directional many-to-one association to User
+	@OneToMany(mappedBy = "role")
 	private List<EmhcUser> users;
 
 	public Role() {

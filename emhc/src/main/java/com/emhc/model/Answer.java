@@ -3,14 +3,13 @@ package com.emhc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the answers database table.
  * 
  */
 @Entity
-@Table(name="answers")
-@NamedQuery(name="Answer.findAll", query="SELECT a FROM Answer a")
+@Table(name = "answers")
+@NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a")
 public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -45,9 +44,9 @@ public class Answer implements Serializable {
 
 	private String answer9;
 
-	//bi-directional many-to-one association to User
+	// bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="userid")
+	@JoinColumn(name = "userid")
 	private EmhcUser user;
 
 	public Answer() {

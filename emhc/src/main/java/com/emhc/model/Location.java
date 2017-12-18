@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the locations database table.
  * 
  */
 @Entity
-@Table(name="locations")
-@NamedQuery(name="Location.findAll", query="SELECT l FROM Location l")
+@Table(name = "locations")
+@NamedQuery(name = "Location.findAll", query = "SELECT l FROM Location l")
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -20,13 +19,13 @@ public class Location implements Serializable {
 
 	private String name;
 
-	//bi-directional many-to-one association to Organization
+	// bi-directional many-to-one association to Organization
 	@ManyToOne
-	@JoinColumn(name="organizationid")
+	@JoinColumn(name = "organizationid")
 	private Organization organization;
 
-	//bi-directional many-to-one association to Session
-	@OneToMany(mappedBy="location")
+	// bi-directional many-to-one association to Session
+	@OneToMany(mappedBy = "location")
 	private List<Session> sessions;
 
 	public Location() {

@@ -5,14 +5,13 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the payments database table.
  * 
  */
 @Entity
-@Table(name="payments")
-@NamedQuery(name="Payment.findAll", query="SELECT p FROM Payment p")
+@Table(name = "payments")
+@NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p")
 public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,11 +23,11 @@ public class Payment implements Serializable {
 	private double balance;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="pay_date")
+	@Column(name = "pay_date")
 	private Date payDate;
 
-	//bi-directional many-to-one association to Registration
-	@OneToMany(mappedBy="payment")
+	// bi-directional many-to-one association to Registration
+	@OneToMany(mappedBy = "payment")
 	private List<Registration> registrations;
 
 	public Payment() {

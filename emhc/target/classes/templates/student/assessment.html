@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html layout:decorator="student/template/layout">
+<html layout:decorator="student/template/layout"
+	xmlns:th="http://www.thymeleaf.org" 
+>
 <head>
 	<script>	
-		function toggleTB(what,elid,state)
+	
+	function toggleTB(what,elid,state)
 	{
 	    if(what.checked)
 	    {
@@ -13,7 +16,29 @@
 	        document.getElementById(elid).disabled=state
 	    }
 	}
-		
+
+    function validation() {
+
+        //Make groups
+        var names = []
+        $('input:radio').each(function () {
+            var rname = $(this).attr('name');
+            if ($.inArray(rname, names) == -1) names.push(rname);
+        });
+        var radioError = false;
+        $.each(names, function (i, name) {
+            if ($('input[name="' + name + '"]:checked').length == 0) {
+                radioError = true;
+            }
+        });
+        
+        //check for error
+        if(radioError) {
+            alert('You need to select 1 option from each group.');
+            return false;
+        }
+        
+    }
 	</script>
 </head>
 	<div layout:fragment="content">
@@ -22,7 +47,10 @@
 				<form autocomplete="off" th:action="@{/student/assessment}"
 					th:object="${answerDTO}" method="post" class="form-horizontal"
 					role="form">
-					<h3>Primary Assessment</h3>
+<!-- 				<form autocomplete="off" th:action="@{/student/assessment}"
+					th:object="${answerDTO}" onsubmit="return validation()" method="post" class="form-horizontal"
+					role="form">
+ -->					<h3>Primary Assessment</h3>
 					<h4>________________________________________________________________________</h4>
 					<h4>Please add pertinent information to yes answers and be as explicit as possible, i.e. triggers & severity for asthma etc.</h4>
 

@@ -3,19 +3,18 @@ package com.emhc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the questions database table.
  * 
  */
 @Entity
-@Table(name="questions")
-@NamedQuery(name="Question.findAll", query="SELECT q FROM Question q")
+@Table(name = "questions")
+@NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q")
 public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	private int questionid;
 
 	@Column(name = "isprimary")

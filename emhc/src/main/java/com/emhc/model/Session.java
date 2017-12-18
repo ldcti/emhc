@@ -5,14 +5,13 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the sessions database table.
  * 
  */
 @Entity
-@Table(name="sessions")
-@NamedQuery(name="Session.findAll", query="SELECT s FROM Session s")
+@Table(name = "sessions")
+@NamedQuery(name = "Session.findAll", query = "SELECT s FROM Session s")
 public class Session implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -37,22 +36,22 @@ public class Session implements Serializable {
 
 	private String status;
 
-	//bi-directional many-to-one association to Schedule
-	@OneToMany(mappedBy="session")
+	// bi-directional many-to-one association to Schedule
+	@OneToMany(mappedBy = "session")
 	private List<Schedule> schedules;
 
-	//bi-directional many-to-one association to Location
+	// bi-directional many-to-one association to Location
 	@ManyToOne
-	@JoinColumn(name="locationid")
+	@JoinColumn(name = "locationid")
 	private Location location;
 
-	//bi-directional many-to-one association to Program
+	// bi-directional many-to-one association to Program
 	@ManyToOne
-	@JoinColumn(name="programid")
+	@JoinColumn(name = "programid")
 	private Program program;
 
-	//bi-directional many-to-one association to Usersession
-	@OneToMany(mappedBy="session")
+	// bi-directional many-to-one association to Usersession
+	@OneToMany(mappedBy = "session")
 	private List<Usersession> usersessions;
 
 	public Session() {

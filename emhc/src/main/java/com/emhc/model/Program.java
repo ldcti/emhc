@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the programs database table.
  * 
  */
 @Entity
-@Table(name="programs")
-@NamedQuery(name="Program.findAll", query="SELECT p FROM Program p")
+@Table(name = "programs")
+@NamedQuery(name = "Program.findAll", query = "SELECT p FROM Program p")
 public class Program implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -20,17 +19,17 @@ public class Program implements Serializable {
 
 	private String name;
 
-	//bi-directional many-to-one association to Organization
+	// bi-directional many-to-one association to Organization
 	@ManyToOne
-	@JoinColumn(name="organizationid")
+	@JoinColumn(name = "organizationid")
 	private Organization organization;
 
-	//bi-directional many-to-one association to Session
-	@OneToMany(mappedBy="program")
+	// bi-directional many-to-one association to Session
+	@OneToMany(mappedBy = "program")
 	private List<Session> sessions;
 
-	//bi-directional many-to-one association to User
-	@OneToMany(mappedBy="program")
+	// bi-directional many-to-one association to User
+	@OneToMany(mappedBy = "program")
 	private List<EmhcUser> users;
 
 	public Program() {

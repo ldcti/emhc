@@ -3,28 +3,27 @@ package com.emhc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the funcroles database table.
  * 
  */
 @Entity
-@Table(name="funcroles")
-@NamedQuery(name="Funcrole.findAll", query="SELECT f FROM Funcrole f")
+@Table(name = "funcroles")
+@NamedQuery(name = "Funcrole.findAll", query = "SELECT f FROM Funcrole f")
 public class Funcrole implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int funcroleid;
 
-	//bi-directional many-to-one association to Function
+	// bi-directional many-to-one association to Function
 	@ManyToOne
-	@JoinColumn(name="functionid")
+	@JoinColumn(name = "functionid")
 	private Function function;
 
-	//bi-directional many-to-one association to Role
+	// bi-directional many-to-one association to Role
 	@ManyToOne
-	@JoinColumn(name="roleid")
+	@JoinColumn(name = "roleid")
 	private Role role;
 
 	public Funcrole() {

@@ -10,11 +10,12 @@ import com.emhc.repository.AnswerRepository;
 public class AnswerService {
 	@Autowired
 	private AnswerRepository answerRepository;
-	
-	public Answer findAnswerByAnswerid(int answerid){
+
+	public Answer findAnswerByAnswerid(int answerid) {
 		return answerRepository.findByAnswerid(answerid);
 	}
-	public Answer saveAnswer(Answer answer){
+
+	public Answer saveAnswer(Answer answer) {
 		return answerRepository.save(answer);
 	}
 }

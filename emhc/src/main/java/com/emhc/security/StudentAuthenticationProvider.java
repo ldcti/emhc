@@ -10,32 +10,32 @@ import org.springframework.security.core.AuthenticationException;
 import com.emhc.model.EmhcUser;
 import com.emhc.repository.UserRepository;
 
-
 public class StudentAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
-    private UserRepository userRepository;
-    
-    @Override
-    public Authentication authenticate(Authentication auth) throws AuthenticationException {
-    	
-    	EmhcUser emhcuser = userRepository.findByUsername(auth.getName());
-    	
-        if ((emhcuser == null)) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
-        
-        final Authentication result = super.authenticate(auth);
-        
-        //System.out.println("result.getCredentials(): " + result.getCredentials().toString());
-        return new UsernamePasswordAuthenticationToken(new LoginStudent(emhcuser), result.getCredentials(), result.getAuthorities());
+	private UserRepository userRepository;
 
-    }
-    
-    
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
+	@Override
+	public Authentication authenticate(Authentication auth) throws AuthenticationException {
+
+		EmhcUser emhcuser = userRepository.findByUsername(auth.getName());
+
+		if ((emhcuser == null)) {
+			throw new BadCredentialsException("Invalid username or password");
+		}
+
+		final Authentication result = super.authenticate(auth);
+
+		// System.out.println("result.getCredentials(): " +
+		// result.getCredentials().toString());
+		return new UsernamePasswordAuthenticationToken(new LoginStudent(emhcuser), result.getCredentials(),
+				result.getAuthorities());
+
+	}
+
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
+	}
 
 }

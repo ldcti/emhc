@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the functions database table.
  * 
  */
 @Entity
-@Table(name="functions")
-@NamedQuery(name="Function.findAll", query="SELECT f FROM Function f")
+@Table(name = "functions")
+@NamedQuery(name = "Function.findAll", query = "SELECT f FROM Function f")
 public class Function implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -22,17 +21,17 @@ public class Function implements Serializable {
 
 	private String name;
 
-	//bi-directional many-to-one association to Funcrole
-	@OneToMany(mappedBy="function")
+	// bi-directional many-to-one association to Funcrole
+	@OneToMany(mappedBy = "function")
 	private List<Funcrole> funcroles;
 
-	//bi-directional many-to-one association to Function
+	// bi-directional many-to-one association to Function
 	@ManyToOne
-	@JoinColumn(name="parent_id")
+	@JoinColumn(name = "parent_id")
 	private Function function;
 
-	//bi-directional many-to-one association to Function
-	@OneToMany(mappedBy="function")
+	// bi-directional many-to-one association to Function
+	@OneToMany(mappedBy = "function")
 	private List<Function> functions;
 
 	public Function() {

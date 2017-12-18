@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,33 +23,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.emhc.dto.AnswerDTO;
 import com.emhc.error.Message;
+import com.emhc.model.Answer;
+import com.emhc.model.EmhcUser;
+import com.emhc.security.LoginStudent;
 import com.emhc.service.AnswerService;
+import com.emhc.service.UserService;
 import com.emhc.validator.AssessmentValidator;
 
 @Controller
 @RequestMapping("/student")
 public class AssessmentController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
-	
-    @Autowired
-    private MessageSource messageSource;
 
+	@Autowired
+	private MessageSource messageSource;
+
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private AnswerService answerService;
 
 	@Autowired
-    private AssessmentValidator assessentValidator;
-	
-   @InitBinder("answerDTO")
-   public void initAssessmentBinder(WebDataBinder binder) {
-       binder.addValidators(assessentValidator);
-   }
-	
-	
-	
-	@RequestMapping(value={"/assessment"}, method = RequestMethod.GET)
-	public String  assessment(Model model){
-		
+	private AssessmentValidator assessentValidator;
+
+	@InitBinder("answerDTO")
+	public void initAssessmentBinder(WebDataBinder binder) {
+		binder.addValidators(assessentValidator);
+	}
+
+	@RequestMapping(value = { "/assessment" }, method = RequestMethod.GET)
+	public String assessment(Model model) {
+
 		String rtn = "student/assessment";
 		AnswerDTO form = new AnswerDTO();
 
@@ -56,31 +61,27 @@ public class AssessmentController {
 
 		return rtn;
 	}
-	
-	
+
 	@RequestMapping(value = "/assessment", method = RequestMethod.POST)
-	public String createNewAssessment(@Valid @ModelAttribute("answerDTO") AnswerDTO form, BindingResult bindingResult, Model model) {
-		
+	public String createNewAssessment(@Valid @ModelAttribute("answerDTO") AnswerDTO form, BindingResult bindingResult,
+			Model model) {
+
 		String rtn = "student/assessment";
 
-		
 		Message message = new Message();
 
-		
-		String answer1 = form.getAnswer1();
-		
 		AnswerDTO newform = new AnswerDTO();
-		//newform.setAnswer1(answer1);
+		// newform.setAnswer1(answer1);
 		model.addAttribute("answerDTO", newform);
-		
-		
+
 		if (bindingResult.hasErrors()) {
 
 			LOGGER.debug("Assessment form validation failed!!!!!!!!");
 			List<ObjectError> errors = bindingResult.getAllErrors();
-			String msg = messageSource.getMessage("Assessment.validation", new Object[] {}, LocaleContextHolder.getLocale()) + "<br />";
-			for(ObjectError i: errors) {
-				if(i instanceof FieldError) {
+			String msg = messageSource.getMessage("Assessment.validation", new Object[] {},
+					LocaleContextHolder.getLocale()) + "<br />";
+			for (ObjectError i : errors) {
+				if (i instanceof FieldError) {
 					FieldError fieldError = (FieldError) i;
 					msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
 				}
@@ -88,25 +89,37 @@ public class AssessmentController {
 			message.setStatus(Message.ERROR);
 			message.setMessage(msg);
 			model.addAttribute("message", message);
-			
-            return rtn;
-			
+
+			return rtn;
+
 		} else {
-			
-			try{
-				
-				answerService.saveAnswer(form.getAnswer());
+
+			try {
+				Answer answer = form.getAnswer();
+				answer.setUser(getPrincipal());
+				answerService.saveAnswer(answer);
 				System.out.println("------run to assessment saved answer-----");
 				message.setStatus(Message.SUCCESS);
-				message.setMessage(messageSource.getMessage("Assessment.success", new Object[] {}, LocaleContextHolder.getLocale()));
-			}
-			catch(Exception e){
+				message.setMessage(messageSource.getMessage("Assessment.success", new Object[] {},
+						LocaleContextHolder.getLocale()));
+			} catch (Exception e) {
 				e.printStackTrace();
-				
+
 			}
 		}
-		model.addAttribute("message",message);
+		model.addAttribute("message", message);
 		return rtn;
 	}
 
+	private EmhcUser getPrincipal() {
+		EmhcUser user = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof LoginStudent) {
+			user = ((LoginStudent) principal).getClient();
+		} else {
+			user = userService.getByUsername("");
+		}
+		return user;
+	}
 }

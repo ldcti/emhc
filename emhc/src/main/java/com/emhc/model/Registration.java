@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
-
 /**
  * The persistent class for the registrations database table.
  * 
  */
 @Entity
-@Table(name="registrations")
-@NamedQuery(name="Registration.findAll", query="SELECT r FROM Registration r")
+@Table(name = "registrations")
+@NamedQuery(name = "Registration.findAll", query = "SELECT r FROM Registration r")
 public class Registration implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -25,19 +24,19 @@ public class Registration implements Serializable {
 
 	private byte reviewed;
 
-	//bi-directional many-to-one association to Payment
+	// bi-directional many-to-one association to Payment
 	@ManyToOne
-	@JoinColumn(name="paymentid")
+	@JoinColumn(name = "paymentid")
 	private Payment payment;
 
-	//bi-directional many-to-one association to Schedule
+	// bi-directional many-to-one association to Schedule
 	@ManyToOne
-	@JoinColumn(name="scheduleid")
+	@JoinColumn(name = "scheduleid")
 	private Schedule schedule;
 
-	//bi-directional many-to-one association to User
+	// bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="userid")
+	@JoinColumn(name = "userid")
 	private EmhcUser user;
 
 	public Registration() {

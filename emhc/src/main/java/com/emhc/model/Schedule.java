@@ -5,14 +5,13 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.List;
 
-
 /**
  * The persistent class for the schedules database table.
  * 
  */
 @Entity
-@Table(name="schedules")
-@NamedQuery(name="Schedule.findAll", query="SELECT s FROM Schedule s")
+@Table(name = "schedules")
+@NamedQuery(name = "Schedule.findAll", query = "SELECT s FROM Schedule s")
 public class Schedule implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -25,13 +24,13 @@ public class Schedule implements Serializable {
 
 	private Time scheduletime;
 
-	//bi-directional many-to-one association to Registration
-	@OneToMany(mappedBy="schedule")
+	// bi-directional many-to-one association to Registration
+	@OneToMany(mappedBy = "schedule")
 	private List<Registration> registrations;
 
-	//bi-directional many-to-one association to Session
+	// bi-directional many-to-one association to Session
 	@ManyToOne
-	@JoinColumn(name="sessionid")
+	@JoinColumn(name = "sessionid")
 	private Session session;
 
 	public Schedule() {

@@ -13,72 +13,69 @@ import org.springframework.validation.Validator;
 
 import com.emhc.dto.StudentProfileUpdate;
 
-
 @Component
 public class StudentProfileUpdateValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentProfileUpdateValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudentProfileUpdateValidator.class);
 
-    private Pattern pattern;  
-    private Matcher matcher;  
+	private Pattern pattern;
+	private Matcher matcher;
 
-	String ProgramYear_PATTERN = "[0-9]+";  
+	String ProgramYear_PATTERN = "[0-9]+";
 
-    private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-    
-    /*private final StudentService studentService;
+	private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 
-    @Autowired
-    public StudentProfileUpdateValidator(StudentService studentService) {
-        this.studentService = studentService;
-    }*/
+	/*
+	 * private final StudentService studentService;
+	 * 
+	 * @Autowired public StudentProfileUpdateValidator(StudentService
+	 * studentService) { this.studentService = studentService; }
+	 */
 
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return clazz.equals(StudentProfileUpdate.class);
-    }
+	@Override
+	public boolean supports(Class<?> clazz) {
+		return clazz.equals(StudentProfileUpdate.class);
+	}
 
-    @Override
-    public void validate(Object target, Errors errors) {
-        LOGGER.debug("StudentProfileUpdate Validating {} started", target);
-        StudentProfileUpdate form = (StudentProfileUpdate) target;
+	@Override
+	public void validate(Object target, Errors errors) {
+		LOGGER.debug("StudentProfileUpdate Validating {} started", target);
+		StudentProfileUpdate form = (StudentProfileUpdate) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "error.username", "User name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", "error.firstname", "First name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastname", "error.lastname", "Last name is required.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "programyear", "error.programyear", "Program Year is required.");  
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "programyear", "error.programyear",
+				"Program Year is required.");
 		validateEmail(errors, form);
 		validateProgramYear(errors, form);
-			  
-			// input string conatains numeric values only  
-    }
 
-    
-    private void validateEmail(Errors errors, StudentProfileUpdate form) {
-    	String email = form.getEmail();
+		// input string conatains numeric values only
+	}
 
-        if (email == null || email.length() == 0) {
-        	LOGGER.debug("email.no_provide :" + email);
-            errors.rejectValue("email", "NotProvide.StudentProfileUpdate.email");
-        } else if (!email.matches(EMAIL_REGEX)) {
-        	LOGGER.debug("email not in right format");
-            errors.rejectValue("email", "WrongFormat.StudentProfileUpdate.email");
-        }
-    		
-    }
-    
-    
-    private void validateProgramYear(Errors errors, StudentProfileUpdate form) {
-    
-    
-	  if (Integer.toString(form.getProgramyear()) != null) {  
-		   pattern = Pattern.compile(ProgramYear_PATTERN);  
-		   matcher = pattern.matcher(Integer.toString(form.getProgramyear()));  
-		   
-		   if (!matcher.matches()) {  
-		    errors.rejectValue("programyear", "programyear.incorrect", "Enter a numeric value");  
-		   }  
-		   
-	  }
+	private void validateEmail(Errors errors, StudentProfileUpdate form) {
+		String email = form.getEmail();
+
+		if (email == null || email.length() == 0) {
+			LOGGER.debug("email.no_provide :" + email);
+			errors.rejectValue("email", "NotProvide.StudentProfileUpdate.email");
+		} else if (!email.matches(EMAIL_REGEX)) {
+			LOGGER.debug("email not in right format");
+			errors.rejectValue("email", "WrongFormat.StudentProfileUpdate.email");
+		}
+
+	}
+
+	private void validateProgramYear(Errors errors, StudentProfileUpdate form) {
+
+		if (Integer.toString(form.getProgramyear()) != null) {
+			pattern = Pattern.compile(ProgramYear_PATTERN);
+			matcher = pattern.matcher(Integer.toString(form.getProgramyear()));
+
+			if (!matcher.matches()) {
+				errors.rejectValue("programyear", "programyear.incorrect", "Enter a numeric value");
+			}
+
+		}
 	}
 
 }

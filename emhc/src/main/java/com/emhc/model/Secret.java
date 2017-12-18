@@ -3,14 +3,13 @@ package com.emhc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the secrets database table.
  * 
  */
 @Entity
-@Table(name="secrets")
-@NamedQuery(name="Secret.findAll", query="SELECT s FROM Secret s")
+@Table(name = "secrets")
+@NamedQuery(name = "Secret.findAll", query = "SELECT s FROM Secret s")
 public class Secret implements Serializable {
 	private static final long serialVersionUID = 1L;
 

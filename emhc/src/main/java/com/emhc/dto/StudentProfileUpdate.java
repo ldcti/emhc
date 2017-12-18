@@ -64,7 +64,6 @@ public class StudentProfileUpdate {
 		this.password = password;
 	}
 
-
 	public int getProgramyear() {
 		return programyear;
 	}
@@ -135,10 +134,11 @@ public class StudentProfileUpdate {
 	private Program program;
 	private Role role;
 	private List<Program> programs;
-	
+
 	public StudentProfileUpdate() {
-		
+
 	}
+
 	public StudentProfileUpdate(EmhcUser user) {
 		this.userid = user.getUserid();
 		this.username = user.getUsername();
@@ -153,8 +153,7 @@ public class StudentProfileUpdate {
 		this.role = user.getRole();
 		this.status = user.getStatus();
 		this.viewer = user.getViewer();
-		
-		
+
 	}
 
 	public EmhcUser getUser() {
