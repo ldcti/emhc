@@ -22,8 +22,53 @@ public class AnswerDTO {
 	private String answer14;
 
 	private String button01;
+	private String button02;
+	private String button03;
+	private String button04;
+	private String button05;
+	private String button06;
+	private String button07;
+	private String button08;
+	private String button09;
+	private String button10;
+	private String button11;
+	private String button12;
+	private String button13;
+	private String button14;
 
-//	@BeanMethodAnnotation(order = 2)
+	public AnswerDTO() {
+
+	}
+
+	public AnswerDTO(Answer answer) {
+
+		this.answerid = answer.getAnswerid();
+		this.user = answer.getUser();
+		this.answer1 = answer.getAnswer1();
+		this.answer2 = answer.getAnswer2();
+		this.answer3 = answer.getAnswer3();
+		this.answer4 = answer.getAnswer4();
+		this.answer5 = answer.getAnswer5();
+		this.answer6 = answer.getAnswer6();
+		this.answer7 = answer.getAnswer7();
+		this.answer8 = answer.getAnswer8();
+		this.answer9 = answer.getAnswer9();
+		this.answer10 = answer.getAnswer10();
+		this.answer11 = answer.getAnswer11();
+		this.answer12 = answer.getAnswer12();
+		this.answer13 = answer.getAnswer13();
+		this.answer14 = answer.getAnswer14();
+	}
+
+
+	public String getButton01() {
+		return button01;
+	}
+
+	public void setButton01(String button01) {
+		this.button01 = button01;
+	}
+
 	public String getButton02() {
 		return button02;
 	}
@@ -32,7 +77,6 @@ public class AnswerDTO {
 		this.button02 = button02;
 	}
 
-//	@BeanMethodAnnotation(order = 3)
 	public String getButton03() {
 		return button03;
 	}
@@ -129,52 +173,7 @@ public class AnswerDTO {
 		this.button14 = button14;
 	}
 
-	private String button02;
-	private String button03;
-	private String button04;
-	private String button05;
-	private String button06;
-	private String button07;
-	private String button08;
-	private String button09;
-	private String button10;
-	private String button11;
-	private String button12;
-	private String button13;
-	private String button14;
 	
-//	@BeanMethodAnnotation(order = 1)
-	public String getButton01() {
-		return button01;
-	}
-
-	public void setButton01(String button01) {
-		this.button01 = button01;
-	}
-
-	public AnswerDTO() {
-
-	}
-
-	public AnswerDTO(Answer answer) {
-
-		this.answerid = answer.getAnswerid();
-		this.user = answer.getUser();
-		this.answer1 = answer.getAnswer1();
-		this.answer2 = answer.getAnswer2();
-		this.answer3 = answer.getAnswer3();
-		this.answer4 = answer.getAnswer4();
-		this.answer5 = answer.getAnswer5();
-		this.answer6 = answer.getAnswer6();
-		this.answer7 = answer.getAnswer7();
-		this.answer8 = answer.getAnswer8();
-		this.answer9 = answer.getAnswer9();
-		this.answer10 = answer.getAnswer10();
-		this.answer11 = answer.getAnswer11();
-		this.answer12 = answer.getAnswer12();
-		this.answer13 = answer.getAnswer13();
-		this.answer14 = answer.getAnswer14();
-	}
 
 	public Answer getAnswer() {
 
