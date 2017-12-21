@@ -166,13 +166,12 @@ public class ScheduleController {
 				register = registrationService.saveRegistration(register);
 				form.setRegistrationid(register.getRegistrationid());
 
-				// emailService.sendMail(emailDTO);
 				String from = "scjimcc@gmail.com";
 				String to = "ldcticti@gmail.com";
 				String subject = "JavaMailSender";
 				String body = "Just-Testing222222222222222222222222!";
 
-				emailService.sendMail(from, to, subject, body);
+			//	emailService.sendMail(from, to, subject, body);
 
 				msg = messageSource.getMessage("StudentSchedule.scheduleTest.success", new Object[] {},
 						LocaleContextHolder.getLocale());

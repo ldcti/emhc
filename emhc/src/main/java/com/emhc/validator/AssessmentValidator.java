@@ -1,7 +1,9 @@
 package com.emhc.validator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.emhc.dto.AnswerDTO;
+import com.emhc.dto.BeanMethodAnnotation;
 
 @Component
 public class AssessmentValidator implements Validator {
@@ -71,45 +74,64 @@ public class AssessmentValidator implements Validator {
 		}
 	}*/
 		try {
-			Class<?> c = Class.forName(getClassName());
-			Method[] methods = c.getMethods();
-//			AnswerDTO object = c.newInstance();
-			String name;
-			for (int i = 0; i < methods.length; i++) {
-				if (methods[i].getName().startsWith("getButton")) {
-					System.out.println(methods[i].getName());
-					Method m = methods[i];
-					try{
-					m.setAccessible(true);
-					if (m.invoke(form) == null) {
-						name = methods[i].getName();
-						name.replace("", "getButton");
-						String temp = "Assessment.select.error" + name;
-						errors.rejectValue("button01", temp);
-
-					} else if (methods[i].invoke(form).equals("Yes")) {
-
-						name = methods[i].getName();
-						name.replace("Button", "Answer");
-						System.out.println("----------------------" + name);
-						Method mm = c.getMethod(name, null);
-						if (mm.invoke(form).equals(null)) {
-							LOGGER.debug("email not in right format");
-							errors.rejectValue("button01", "Assessment.selected.error");
-
-						}
-					}
-					}
-					catch (InvocationTargetException x) {
-					    Throwable cause = x.getCause();
-					}
-				}
-				}
+				Class<?> c = Class.forName(getClassName());
+				Method[] methods = c.getMethods();
 				
-			  } catch (Exception ex) {
-			ex.printStackTrace();
-			}
 			
+				int i;
+				
+			    List<Method> methodList = new ArrayList<>();  
+			    // 过滤带有注解的Field  
+			    for(Method mm:methods){  
+			        if(mm.getAnnotation(BeanMethodAnnotation.class)!=null){  
+			            methodList.add(mm);  
+			            System.out.println("method is -----\n"+mm.getName());
+			        }  
+			    }  
+			    // 这个比较排序的语法依赖于java 1.8  
+			    methodList.sort(Comparator.comparingInt( m -> m.getAnnotation(BeanMethodAnnotation.class).order()));  			
+			    for( i=0; i<methodList.size(); i++){  
+			        		 
+				            System.out.println("final method is -----\n"+ methodList.get(i).getName());
+			         
+			    }  
+			    
+/*				SortedSet<Method> sortedmethods = new TreeSet<Method>(new MethodComparator());
+				sortedmethods.addAll(Arrays.asList(tempmethods));
+				
+				for (j=0; j < sortedmethods.size(); j++){
+					System.out.println(sortedmethods[i].getName());
+					try{
+							
+							m.setAccessible(true);
+							if (m.invoke(form) == null) {
+								name = methods[i].getName();
+								name.replace("", "getButton");
+								System.out.println(" name is "+ name);
+								String temp = "Assessment.select.error" + name;
+								errors.rejectValue("button01", temp);
+
+							} else if (methods[i].invoke(form).equals("Yes")) {
+
+								name = methods[i].getName();
+								name.replace("Button", "Answer");
+								System.out.println("----------------------" + name);
+								Method mm = c.getMethod(name, null);
+								if (mm.invoke(form).equals(null)) {
+									LOGGER.debug("email not in right format");
+									errors.rejectValue("button01", "Assessment.selected.error");
+
+								}
+							
+							}
+						}catch (InvocationTargetException x) {
+								Throwable cause = x.getCause();
+							}
+				}*/
+			}catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		
 			/*
 			 * if (form.getButton01() == null) { errors.rejectValue("button01",
 			 * "Assessment.select.error");

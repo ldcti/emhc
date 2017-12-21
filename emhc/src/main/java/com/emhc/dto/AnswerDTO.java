@@ -23,6 +23,7 @@ public class AnswerDTO {
 
 	private String button01;
 
+//	@BeanMethodAnnotation(order = 2)
 	public String getButton02() {
 		return button02;
 	}
@@ -31,6 +32,7 @@ public class AnswerDTO {
 		this.button02 = button02;
 	}
 
+//	@BeanMethodAnnotation(order = 3)
 	public String getButton03() {
 		return button03;
 	}
@@ -140,7 +142,8 @@ public class AnswerDTO {
 	private String button12;
 	private String button13;
 	private String button14;
-
+	
+//	@BeanMethodAnnotation(order = 1)
 	public String getButton01() {
 		return button01;
 	}
